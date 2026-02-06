@@ -1,0 +1,41 @@
+
+import "platform:/plugin/org.genivi.commonapi.someip/deployment/CommonAPI-4-SOMEIP_deployment_spec.fdepl"
+import "bootloader.fidl"
+
+define org.genivi.commonapi.someip.deployment for interface firmware.Bootloader {
+    SomeIpServiceID = 0x4666        
+
+    
+    method get_app {
+        SomeIpMethodID = 0x01
+        SomeIpReliable = false
+    }
+
+    method request_download {
+        SomeIpMethodID = 0x02
+        SomeIpReliable = false
+    }
+
+    broadcast new_firmware_available {
+        SomeIpEventID = 0x8001
+        SomeIpEventGroups = { 0x0001 }
+        SomeIpReliable = false
+    }
+
+}
+
+
+define org.genivi.commonapi.someip.deployment for provider as MyService {
+    instance firmware.Bootloader {
+        // CommonAPI instance identifier
+        InstanceId = "my.company.service.Calculator"
+        
+        // SOME/IP instance ID
+        SomeIpInstanceID = 1
+        
+        // Network configuration
+        SomeIpUnicastAddress = "127.0.0.1"
+        SomeIpReliableUnicastPort = 30501      // TCP port
+        SomeIpUnreliableUnicastPort = 30502    // UDP port
+    }
+}

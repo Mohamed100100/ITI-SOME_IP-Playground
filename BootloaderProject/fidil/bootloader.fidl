@@ -1,0 +1,27 @@
+package firmware
+
+// we write for each sid an interface
+interface Bootloader {
+    version {major 1 minor 0}
+
+    method get_app{
+        in {
+            UInt32 size
+        }
+        out {
+            UInt8[] app_data
+        }
+    }
+
+    method request_download {
+        out {
+            Boolean ready
+        }
+    }
+
+    broadcast new_firmware_available {
+        out {
+            String firmware_version
+        }
+    }
+}
